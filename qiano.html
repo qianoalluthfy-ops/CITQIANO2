@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QIANO XITER - FULL VERSION</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: #000;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            font-family: 'Arial Black', Gadget, sans-serif;
+        }
+
+        /* ========== TAHAP 1: AWAL ========== */
+        .screen-1 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            animation: hide-1 0.8s forwards 5s;
+        }
+
+        /* Latar belakang panggung */
+        .bg-1 {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top, rgba(0, 100, 30, 0.6) 0%, #000 80%);
+            opacity: 0;
+            animation: show-bg 1.2s forwards 0.2s;
+        }
+
+        /* Panggung bawah */
+        .bg-1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 25%;
+            background: linear-gradient(to top, #008020, rgba(0, 120, 30, 0.2));
+            border-top: 2px solid #00ff66;
+            box-shadow: 0 0 20px #00ff66;
+        }
+
+        /* Sinar hijau dari atas */
+        .ray {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 0;
+            background: linear-gradient(to bottom, #00ff66, rgba(0, 255, 100, 0.1), transparent);
+            border-radius: 50% 50% 0 0;
+            box-shadow: 0 0 30px #00ff66;
+            animation: ray-grow 2.5s forwards 0.5s;
+        }
+
+        /* Percikan cahaya */
+        .ray::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            width: 100%;
+            height: 50%;
+            background: repeating-linear-gradient(45deg, rgba(0, 255, 100, 0.3) 0px, rgba(0, 255, 100, 0.3) 2px, transparent 2px, transparent 4px);
+            opacity: 0;
+            animation: spark 1.5s forwards 1s;
+        }
+
+        /* Teks awal */
+        .text-1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(50px);
+            font-size: clamp(3rem, 8vw, 5rem);
+            color: #00ff66;
+            text-shadow: 0 0 10px #00ff66, 0 0 30px #00ff66, 0 0 50px #00ff66;
+            opacity: 0;
+            animation: text-up 1.8s forwards 2.5s, text-fade 1s forwards 4.5s;
+        }
+
+        /* ========== TAHAP 2: TEROWONGAN ========== */
+        .screen-2 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            opacity: 0;
+            z-index: 2;
+            animation: show-tunnel 7s forwards 5s, hide-2 0.8s forwards 12s;
+        }
+
+        /* Garis terowongan */
+        .screen-2::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(15deg, transparent 0%, transparent 1%, #00ff66 1%, #00ff66 2%),
+                        repeating-linear-gradient(105deg, transparent 0%, transparent 1%, #00ff66 1%, #00ff66 2%);
+            background-size: 50px 50px;
+            animation: tunnel-zoom 7s forwards 5s;
+        }
+
+        /* ========== TAHAP 3: AKHIR ========== */
+        .screen-3 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #001a05 0%, #000 80%);
+            opacity: 0;
+            z-index: 1;
+            animation: show-3 1s forwards 12s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Pola heksagonal */
+        .screen-3::before {
+            content: '';
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            border: 3px solid #00ff66;
+            box-shadow: 0 0 30px #00ff66;
+            transform: rotate(30deg);
+            background: linear-gradient(60deg, rgba(0, 255, 100, 0.2) 2px, transparent 2px) repeat;
+            background-size: 40px 40px;
+        }
+
+        /* Tombol sidik jari */
+        .btn {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid #00ff66;
+            background: radial-gradient(circle, rgba(0, 255, 100, 0.4) 0%, transparent 75%);
+            box-shadow: 0 0 20px #00ff66, inset 0 0 20px rgba(0, 255, 100, 0.5);
+            position: relative;
+            opacity: 0;
+            animation: btn-show 1.8s forwards 13s;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        /* Pola tombol */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: repeating-linear-gradient(45deg, #00ff66 0%, transparent 8%, transparent 92%, #00ff66 100%);
+            animation: btn-pulse 2s infinite forwards 14s;
+        }
+
+        /* Efek lingkaran luar */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 255, 100, 0.5);
+            animation: ring-pulse 3s infinite forwards 14s;
+        }
+
+        /* Teks tombol */
+        .btn-text {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #00ff66;
+            text-shadow: 0 0 8px #00ff66;
+            letter-spacing: 2px;
+        }
+
+        /* Teks akhir */
+        .text-2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.3);
+            font-size: clamp(4rem, 10vw, 6rem);
+            color: transparent;
+            background: linear-gradient(90deg, #00ff66, #00ffaa, #00cc55, #00ff66);
+            background-size: 300% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            text-shadow: 0 0 25px rgba(0, 255, 100, 0.6), 0 0 50px rgba(0, 255, 100, 0.4);
+            opacity: 0;
+            z-index: 3;
+        }
+
+        .text-2.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            animation: text-glow 4s infinite;
+        }
+
+        .screen-3.active {
+            box-shadow: inset 0 0 150px #00ff66;
+        }
+
+        /* ========== SEMUA ANIMASI ========== */
+        @keyframes show-bg { to { opacity: 1; } }
+        @keyframes ray-grow { 0% { height: 0; opacity: 0; } 50% { height: 75%; opacity: 0.9; } 100% { height: 70%; opacity: 0.8; } }
+        @keyframes spark { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 0.6; transform: scale(1.1); } 100% { opacity: 0; transform: scale(1.2); } }
+        @keyframes text-up { to { opacity: 1; transform: translate(-50%, -50%) translateY(0); } }
+        @keyframes text-fade { to { opacity: 0; transform: translate(-50%, -50%) translateY(-30px); } }
+        @keyframes hide-1 { to { opacity: 0; z-index: 0; } }
+        @keyframes show-tunnel { to { opacity: 1; } }
+        @keyframes tunnel-zoom { 0% { transform: scale(1); } 100% { transform: scale(5); } }
+        @keyframes hide-2 { to { opacity: 0; z-index: 0; } }
+        @keyframes show-3 { to { opacity: 1; z-index: 2; } }
+        @keyframes btn-show { to { opacity: 1; } }
+        @keyframes btn-pulse { 0% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.05); } 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); } }
+        @keyframes ring-pulse { 0% { width: 100%; height: 100%; opacity: 1; } 100% { width: 150%; height: 150%; opacity: 0; } }
+        @keyframes text-glow { 0% { background-position: 0%; } 100% { background-position: 300%; } }
+    </style>
+</head>
+<body>
+    <!-- TAHAP 1 -->
+    <div class="screen-1">
+        <div class="bg-1"></div>
+        <div class="ray"></div>
+        <h1 class="text-1">QIANO XITER</h1>
+    </div>
+
+    <!-- TAHAP 2 -->
+    <div class="screen-2"></div>
+
+    <!-- TAHAP 3 -->
+    <div class="screen-3" id="screen3">
+        <div class="btn" id="btn">
+            <div class="btn-text">TEKAN UNTUK MASUK</div>
+        </div>
+        <h1 class="text-2" id="textFinal">QIANO XITER</h1>
+    </div>
+
+    <script>
+        // Fungsi tombol klik
+        const btn = document.getElementById('btn');
+        const textFinal = document.getElementById('textFinal');
+        const screen3 = document.getElementById('screen3');
+
+        btn.addEventListener('click', () => {
+            btn.style.opacity = '0';
+            setTimeout(() => {
+                textFinal.classList.add('active');
+                screen3.classList.add('active');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
